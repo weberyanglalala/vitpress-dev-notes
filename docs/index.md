@@ -3,23 +3,22 @@
 layout: home
 
 hero:
-  name: "My Dev Notes"
+  name: "Dev Notes"
   text: "A VitePress Site"
-  tagline: My great project tagline
+  tagline: Dev Notes Including .NET, Vue, and More!
   actions:
     - theme: brand
-      text: Markdown Examples
-      link: /markdown-examples
+      text: .NET Notes
+      link: /dotnet/index
     - theme: alt
-      text: API Examples
-      link: /api-examples
+      text: Vue Notes
+      link: /vue/index
+    - theme: alt
+      text: Semantic Kernel
+      link: /semantic-kernel/index
+    - theme: alt
+      text: Vitpress
+      link: /vitpress/index
 
-features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
 ---
 
