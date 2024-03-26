@@ -6,6 +6,7 @@ export default defineConfig({
   description: "Weber Dev Notes",
   lang: 'zh-TW',
   cleanUrls: true,
+  base: "/vitpress-dev-notes/",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
