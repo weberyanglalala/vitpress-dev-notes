@@ -3,7 +3,7 @@
 - 首先，需要在 GitHub 儲存庫的設置中啟用 GitHub Pages 功能。
 - 這通常在設置的 "Pages" 部分完成。確保選擇 "GitHub Actions" 作為你的部署源。
 
-![](../images/vitpress/vitpress-deploy-github-page-settings.png)
+![](/vitpress/vitpress-deploy-github-page-settings.png)
 
 ## 步驟 2: 創建 GitHub Actions 工作流程
 - [VitPress Deploy Guide](https://vitepress.dev/guide/deploy#github-pages)
@@ -77,4 +77,4 @@ jobs:
 ```
 
 ## 步驟 3: 當 push 到 main 分支時，GitHub Actions 會自動部署站台
-![](../images/vitpress/vitpress-github-cd.png)
+![](/vitpress/vitpress-github-cd.png)

@@ -11,11 +11,8 @@ hero:
       text: .NET Notes
       link: /dotnet/index
     - theme: alt
-      text: Vue Notes
-      link: /vue/index
-    - theme: alt
-      text: Semantic Kernel
-      link: /semantic-kernel/index
+      text: AI
+      link: /ai/openai/assistants-api
     - theme: alt
       text: Vitpress
       link: /vitpress/index

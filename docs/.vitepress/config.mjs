@@ -1,7 +1,6 @@
-import {defineConfig} from 'vitepress'
-
+import {withMermaid} from "vitepress-plugin-mermaid";
 // https://vitepress.dev/reference/site-config
-export default defineConfig({
+export default withMermaid({
   title: "Dev Notes",
   description: "Weber Dev Notes",
   lang: 'zh-TW',
@@ -12,7 +11,8 @@ export default defineConfig({
     nav: [
       {text: 'Home', link: '/'},
       {text: '.NET', link: '/dotnet/index'},
-      {text: 'VitPress', link: '/vitpress/index'}
+      {text: 'VitPress', link: '/vitpress/index'},
+      {text: 'AI', link: '/ai/openai/assistants-api'}
     ],
     sidebar: [
       {
@@ -22,15 +22,10 @@ export default defineConfig({
         ]
       },
       {
-        text: 'Vue',
+        text: 'AI',
         items: [
-          {text: 'Index', link: '/vue/index'},
-        ]
-      },
-      {
-        text: 'Semantic Kernel',
-        items: [
-          {text: 'Index', link: '/semantic-kernel/index'},
+          {text: 'Open AI Assistant API', link: '/ai/openai/assistants-api'},
+          {text: 'Lab: 旅遊推薦達人', link: '/ai/openai/travel-recommandation'},
         ]
       },
       {
@@ -40,9 +35,11 @@ export default defineConfig({
         ]
       },
     ],
-
     socialLinks: [
       {icon: 'github', link: 'https://github.com/vuejs/vitepress'}
     ]
+  },
+  mermaid: {
+    theme: 'default',
   }
 })
