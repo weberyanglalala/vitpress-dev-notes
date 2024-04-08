@@ -19,20 +19,23 @@ export default withMermaid({
         text: '.NET',
         items: [
           {text: 'Coravel 範例', link: '/dotnet/coravel'},
-        ]
+        ],
+        collapsed: false,
       },
       {
         text: 'AI',
         items: [
           {text: 'Open AI Assistant API', link: '/ai/openai/assistants-api'},
           {text: 'Lab: 旅遊推薦達人', link: '/ai/openai/travel-recommandation'},
-        ]
+        ],
+        collapsed: false,
       },
       {
         text: 'VitPress',
         items: [
           {text: '部署流程', link: '/vitpress/index'},
-        ]
+        ],
+        collapsed: false,
       },
     ],
     socialLinks: [
