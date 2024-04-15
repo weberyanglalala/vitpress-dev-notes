@@ -26,7 +26,7 @@ export default withMermaid({
         text: 'AI',
         items: [
           {text: 'Open AI Assistant API', link: '/ai/openai/assistants-api'},
-          {text: 'Lab: 旅遊推薦達人', link: '/ai/openai/travel-recommandation'},
+          {text: 'Lab: 旅遊推薦達人', link: '/ai/openai/travel-recommendation'},
         ],
         collapsed: false,
       },
