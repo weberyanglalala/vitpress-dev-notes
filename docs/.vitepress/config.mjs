@@ -27,6 +27,7 @@ export default withMermaid({
         items: [
           {text: 'Open AI Assistant API', link: '/ai/openai/assistants-api'},
           {text: 'Lab: 旅遊推薦達人', link: '/ai/openai/travel-recommendation'},
+          {text: 'Lab: Build A Coze Chatbot', link: '/ai/coze/coze-chatbot'},
         ],
         collapsed: false,
       },
