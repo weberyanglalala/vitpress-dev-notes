@@ -232,13 +232,38 @@ sequenceDiagram
 
 ### Admin 建立 Assistant
 
+>User 上傳 Retrieval 檔案
 ```mermaid
 sequenceDiagram
     participant Admin
     participant Server
     participant OpenAI
-    Admin ->> Server: 上傳 Retrieval 檔案、設定 Assistant Instructions
+    Admin ->> Server: 讀取 Retrieval 檔案列表
+    Server ->> OpenAI: 請求 Retrieval 檔案列表
+    Note over Server,OpenAI: [api/FileUpload/GetAllFilesFromOpenAI]
+    OpenAI ->> Server: 回傳 Retrieval 檔案列表
+    Server ->> Admin: 顯示 Retrieval 檔案列表
+    Admin ->> Server: 上傳 Retrieval 檔案
+    Server ->> OpenAI: 上傳 Retrieval 檔案
+    Note over Server,OpenAI:[api/FileUpload/UploadFileToOpenAi]
+    OpenAI ->> Server: 上傳 Retrieval 檔案成功
+    Server ->> Admin: 顯示已上傳的檔案
+```
+
+>User 建立 Assistant
+```mermaid
+sequenceDiagram
+    participant Admin
+    participant Server
+    participant OpenAI
+    Admin ->> Server: 請求 Assistant 列表
+    Server ->> OpenAI: 請求 Assistant 列表
+    Note over Server,OpenAI: [api/Assistants/GetAssistants]
+    OpenAI ->> Server: 回傳 Assistant 列表
+    Server ->> Admin: 顯示 Assistant 列表
+    Admin ->> Server:設定 Assistant Instructions
     Server ->> OpenAI:  請求建立 Assistant
+    Note over Server,OpenAI: [api/Assistants/CreateAssistant]
     OpenAI ->> Server: 回傳 Assistant 建立成功
     Server ->> Admin: 顯示已建立的 Assistants
 ```
@@ -259,29 +284,34 @@ sequenceDiagram
     User ->> LineBot: 使用者輸入地點、時間、預算等旅遊需求
     LineBot ->> Server: 將 Message, AssistantId 傳送至 Server
     Server ->> OpenAI: 請求建立 Thread 並執行 Run Thread
+    Note over Server,OpenAI: [TravelConsultantService/CreateThreadAndRun]
     OpenAI ->> Server: 回傳 Thread 建立成功，並開始執行 Run Thread
 
-    loop 每 5 秒詢問執行狀態，直到完成
+    loop 每 5 秒詢問執行狀態，直到 status 為 completed
         Server ->> OpenAI: 詢問 Thread 和 Run 的執行狀態
+        Note over Server,OpenAI: [TravelConsultantService/CheckRunStatus]
         OpenAI ->> Server: 回傳 Run 的執行狀態
     end
 
-    alt 執行狀態完成
+    alt status completed 執行狀態完成
         Server ->> OpenAI: 請求 Thread 的 Messages
+        Note over Server,OpenAI: [TravelConsultantService/GetMessageByThreadId]
         OpenAI ->> Server: 回傳 Thread 的 Messages
         Server ->> LineBot: 回傳 Messages
         LineBot ->> User: 顯示 Messages
         Server ->> OpenAI: 請求刪除 Thread
+        Note over Server,OpenAI: [TravelConsultantService/RemoveThreadByThreadId]
         OpenAI ->> Server: 刪除 Thread 成功
-    else 執行狀態失敗
+    else status not completed 執行狀態失敗
         Server ->> LineBot: 回傳錯誤訊息
         LineBot ->> User: 顯示錯誤訊息
     end
 ```
-
-- [api/Threads/CreateThreadAndRun] 建立 thread 並且 run
-- [api/Messages/GetMessagesByThreadId] 獲得該 thread 的 messages
-- [api/Threads/DeleteThread] 刪除 thread
+- [TravelConsultantService/GetSingleResponseFromAssistant] 
+- [TravelConsultantService/CreateThreadAndRun] 建立 thread 並且 run
+- [TravelConsultantService/CheckRunStatus] 確認 run 的結果
+- [TravelConsultantService/GetMessageByThreadId] 獲得該 thread 的 message
+- [TravelConsultantService/RemoveThreadByThreadId] 刪除 thread
 
 ## TODOs
 
