@@ -65,7 +65,24 @@ lang: zh-TW
 
 ## How Assistants API works?
 
+![]("https://cdn.openai.com/API/docs/images/diagram-assistant.webp")
+
 - [How Assistants work](https://platform.openai.com/docs/assistants/how-it-works)
+
+### Objects
+- Assistant: 使用 OpenAI 的模型和呼叫工具來完成任務的一個 Assistant 實例。 
+- Thread:	一個助理和用戶之間的對話會話內容。Thread 存儲 Messages 自動處理與 Assistant 對話的上下文。
+- Message:	由 Assistant 或使用者創建的訊息。訊息可以包含文字、圖片和其他檔案。訊息被存放在 Thread 上。 
+- Run: 呼叫 Assistant 上面的 Thread。Assistant 使用其 Instructions, Tools, Files 和 Thread 中訊息 Messages，通過調用模型和工具來執行任務。運行後，會將生成結果附加到該 Thread 的 Message 中。
+- Run Step: Run 中 Assistant 取決的步驟。Assistant 可以呼叫工具或創建訊息。檢查 Run Step 可以讓您了解 Assistant 如何獲得其最終結果。
+
+### Assistant API References
+- https://platform.openai.com/docs/api-reference/assistants
+
+### Run Lifecycle
+
+![]("https://cdn.openai.com/API/docs/images/diagram-1.png")
+
 
 ## Travel Recommendation Assistant
 
