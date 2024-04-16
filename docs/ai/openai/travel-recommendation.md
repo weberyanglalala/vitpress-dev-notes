@@ -213,7 +213,6 @@ sequenceDiagram
 - Update Admin Project Settings By Adding user-secrets
 ```json
 {
-	// ...
 	"OpenAISettings": {
 		"ApiKey": "your-api-key",
 		"FileUploadUrl": "https://api.openai.com/v1/files",
@@ -227,7 +226,6 @@ sequenceDiagram
 		"ChannelAccessToken": "your-channel",
 		"OpenAIAssistantId": "your-assistant-id"
 	}
-	// ...
 }
 ```
 
@@ -239,7 +237,7 @@ sequenceDiagram
     participant Admin
     participant Server
     participant OpenAI
-    Admin ->> Server: 上傳 Retrieve 檔案、設定 Assistant Instructions
+    Admin ->> Server: 上傳 Retrieval 檔案、設定 Assistant Instructions
     Server ->> OpenAI:  請求建立 Assistant
     OpenAI ->> Server: 回傳 Assistant 建立成功
     Server ->> Admin: 顯示已建立的 Assistants
@@ -285,11 +283,17 @@ sequenceDiagram
 - [api/Messages/GetMessagesByThreadId] 獲得該 thread 的 messages
 - [api/Threads/DeleteThread] 刪除 thread
 
-::: tip TODO
-根據前台使用者輸入的 prompt，由 Assistants API 執行特定 action 取得實時 api 資料推薦旅遊行程
+## TODOs
+
+::: tip All TODOs
+- Assistant Update APIs
+- 根據前台使用者輸入的 prompt，由 Assistants API 執行特定 action 取得實時 api 資料推薦旅遊行程
 :::
 
 1. 使用者的輸入地點、時間、預算等
 2. 呼叫 Assistants API Open AI 執行特定 action 取得實時 api 資料推薦旅遊行程。
 
+## Assignments
 
+1. 透過排程批次處理生成旅遊行程行銷文案
+2. 透過 Assistants API 根據 Retrieval 檢索旅遊行程 json 檔案，推薦旅遊行程

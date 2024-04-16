@@ -3,7 +3,7 @@ title: Open AI Assistants API
 lang: zh-TW
 ---
 
-# Open AI Assistants API
+# Open AI Assistants API Basics and Retrieval
 
 > https://platform.openai.com/docs/assistants/overview?context=with-streaming
 
@@ -66,4 +66,27 @@ lang: zh-TW
 ## How Assistants API works?
 
 - [How Assistants work](https://platform.openai.com/docs/assistants/how-it-works)
+
+## Travel Recommendation Assistant
+
+### Sample Input
+
+```text
+我想要查詢台北藝文行程，我想要品味美食、感受文化
+```
+
+### Assistant API Logs
+
+#### 1. 使用者撰寫 prompt，建立 Thread，新增 User Message
+![](/ai/openai-assistant-api/create-new-message.png)
+
+#### 2. 此時只有建立 Message 並沒有執行並取得結果
+![](/ai/openai-assistant-api/return-message-create-success.png)
+
+#### 3. Running Retrieval 資料檢索
+![](/ai/openai-assistant-api/running-retrieval.png)
+
+#### 4. Run Thread Logs
+![](/ai/openai-assistant-api/run-thread-logs.png)
+
 
