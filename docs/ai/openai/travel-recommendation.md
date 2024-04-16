@@ -207,10 +207,64 @@ sequenceDiagram
 ## Feature 2: Assistant API Retrieval
 > 根據前台使用者輸入的 prompt，由 Assistants API 根據 Retrieval 檢索旅遊行程 json 檔案，推薦旅遊行程
 
+### Project initialization
+>從 github 下載專案，下載 Branch: feature-travel-recommend
 - [Lab: Travel Recommendation](https://github.com/weberyanglalala/BS.DemoShopTemplate/commits/feature-travel-recommand/)
 - Branch: feature-travel-recommend
 - Commit: 21fb144a686c25f19692cd357e981bfcbe7a5a2e
+
+### Setup Line Messaging API App
+- [Line Messaging API](https://developers.line.biz/en/services/messaging-api/)
+- [Line Login Console](https://developers.line.biz/console/)
+
+### Login to Line Developer Console
+![](/ai/openai-assistant-api/line-developer-console.png)
+
+### Create App From a Provider
+![](/ai/openai-assistant-api/create-app-from-provider.png)
+
+### Create New Channel
+![](/ai/openai-assistant-api/create-new-channel-1.png)
+![](/ai/openai-assistant-api/create-new-channel-2.png)
+
+### Setup Channel Settings and Approve Policies
+- Company Name Travel Recommendation
+- Channel Name
+- Channel Description
+- Category
+- Subcategory
+
+### Get Messaging API Credentials
+- Channel Access Token
+- AdminUserId
+  - Basic Settings > Your user ID
+
+### Setup Webhook URL
+>set up local development environment by ngrok
+- get current application running port
+- run ngrok
+
+```
+ngrok http localhost:{port}
+```
+
+- get a public url for webhook
+
+- use webhook url
+  - Messaging API > Webhook settings > Use webhooks > Enabled
+
+- update webhook url in Line Developer Console
+  - Messaging API > Webhook settings > Webhook URL > https://{your_id}.ngrok.app/api/LineBotChatGPTWebHook
+- verify webhook url
+
+### Disable Auto-Reply
+- Messaging API > LINE Official Account features > Auto-reply messages > Disabled
+
+![](/ai/openai-assistant-api/disable-messaging-api-auto-reply.png)
+
+### Setup User-Secrets
 - Update Admin Project Settings By Adding user-secrets
+
 ```json
 {
 	"OpenAISettings": {
@@ -228,6 +282,7 @@ sequenceDiagram
 	}
 }
 ```
+
 
 
 ### Admin 建立 Assistant
