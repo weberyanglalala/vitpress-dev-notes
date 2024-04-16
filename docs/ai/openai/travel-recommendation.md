@@ -27,6 +27,7 @@ sequenceDiagram
 
 
 ### 1. 給定旅遊活動文字檔
+- [travel.json](/ai/openai-assistant-api/travel.json)
 
 ```json
 {
