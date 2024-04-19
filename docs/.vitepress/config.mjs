@@ -45,5 +45,19 @@ export default withMermaid({
   },
   mermaid: {
     theme: 'default',
-  }
+  },
+  head: [
+    [
+      'script',
+      {async: '', src: 'https://www.googletagmanager.com/gtag/js?id=G-B7LWF9VCBK'}
+    ],
+    [
+      'script',
+      {},
+      `window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-B7LWF9VCBK');`
+    ]
+  ]
 })
