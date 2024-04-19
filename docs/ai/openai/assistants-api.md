@@ -65,8 +65,6 @@ lang: zh-TW
 
 ## How Assistants API works?
 
-![]("https://cdn.openai.com/API/docs/images/diagram-assistant.webp")
-
 - [How Assistants work](https://platform.openai.com/docs/assistants/how-it-works)
 
 ### Objects
@@ -80,9 +78,6 @@ lang: zh-TW
 - https://platform.openai.com/docs/api-reference/assistants
 
 ### Run Lifecycle
-
-![]("https://cdn.openai.com/API/docs/images/diagram-1.png")
-
 
 ## Travel Recommendation Assistant
 
