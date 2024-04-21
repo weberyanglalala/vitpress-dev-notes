@@ -9,7 +9,7 @@ hero:
   actions:
     - theme: brand
       text: .NET Notes
-      link: /dotnet/index
+      link: /dotnet/coravel
     - theme: alt
       text: AI
       link: /ai/openai/assistants-api
