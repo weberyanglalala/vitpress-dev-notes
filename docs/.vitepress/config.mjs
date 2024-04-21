@@ -10,7 +10,7 @@ export default withMermaid({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       {text: 'Home', link: '/'},
-      {text: '.NET', link: '/dotnet/index'},
+      {text: '.NET', link: '/dotnet/coravel'},
       {text: 'VitPress', link: '/vitpress/index'},
       {text: 'AI', link: '/ai/openai/assistants-api'}
     ],
