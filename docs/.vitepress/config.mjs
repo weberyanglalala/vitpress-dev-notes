@@ -12,7 +12,8 @@ export default withMermaid({
       {text: 'Home', link: '/'},
       {text: '.NET', link: '/dotnet/coravel'},
       {text: 'VitPress', link: '/vitpress/index'},
-      {text: 'AI', link: '/ai/openai/assistants-api'}
+      {text: 'AI', link: '/ai/openai/assistants-api'},
+      {text: 'Docker', link: '/docker/m1-sql-server-connect-from-vm.md'}
     ],
     sidebar: [
       {
@@ -38,6 +39,21 @@ export default withMermaid({
         ],
         collapsed: false,
       },
+      {
+        text: 'Semantic Kernel',
+        items: [
+          {text: 'Lab: First Agent', link: '/semantic-kernel/first-agent'},
+        ],
+        collapsed: false,
+      },
+      {
+        text: 'Docker',
+        items: [
+          {text: 'SQL SERVER', link: '/docker/m1-sql-server-connect-from-vm.md'},
+        ],
+        collapsed: false,
+      },
+
     ],
     socialLinks: [
       {icon: 'github', link: 'https://github.com/vuejs/vitepress'}
