@@ -73,18 +73,6 @@ export default withMermaid({
   head: [
     [
       'script',
-      {async: '', src: 'https://www.googletagmanager.com/gtag/js?id=G-B7LWF9VCBK'}
-    ],
-    [
-      'script',
-      {},
-      `window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-B7LWF9VCBK');`
-    ],
-    [
-      'script',
       {},
       `<!-- Hotjar Tracking Code for VitPress -->
         (function(h,o,t,j,a,r){
@@ -96,5 +84,22 @@ export default withMermaid({
             a.appendChild(r);
         })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');`
     ]
-  ]
+  ],
+  transformHtml: (code, id, {siteConfig}) => {
+    const gtmScript = `<!-- Google Tag Manager -->
+      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-P669ZKDL');</script>
+      <!-- End Google Tag Manager -->`;
+
+    const gtmNoscript = `<!-- Google Tag Manager (noscript) -->
+      <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P669ZKDL"
+      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+      <!-- End Google Tag Manager (noscript) -->`;
+
+    return code.replace('</head>', `${gtmScript}\n</head>`)
+      .replace('<body>', `<body>\n${gtmNoscript}`);
+  }
 })
