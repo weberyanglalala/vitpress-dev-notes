@@ -6,6 +6,7 @@ export default withMermaid({
   lang: 'zh-TW',
   cleanUrls: true,
   base: "/vitpress-dev-notes/",
+  lastUpdated: true,
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
@@ -36,6 +37,7 @@ export default withMermaid({
         text: 'VitPress',
         items: [
           {text: '部署流程', link: '/vitpress/index'},
+          {text: 'Vue Flow Embedding', link: '/vitpress/vue-flow'},
         ],
         collapsed: false,
       },
@@ -57,7 +59,13 @@ export default withMermaid({
     ],
     socialLinks: [
       {icon: 'github', link: 'https://github.com/vuejs/vitepress'}
-    ]
+    ],
+    search: {
+      provider: 'local'
+    },
+    footer: {
+      copyright: 'Copyright © 2023-present Weber Yang',
+    }
   },
   mermaid: {
     theme: 'default',
@@ -87,7 +95,6 @@ export default withMermaid({
             r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
             a.appendChild(r);
         })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');`
-    ],
-
+    ]
   ]
 })
