@@ -83,7 +83,8 @@ export default withMermaid({
             r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
             a.appendChild(r);
         })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');`
-    ]
+    ],
+    ['link', { rel: 'stylesheet', href: 'https://unpkg.com/tailwindcss@2.0.4/dist/tailwind.min.css' }]
   ],
   transformHtml: (code, id, {siteConfig}) => {
     const gtmScript = `<!-- Google Tag Manager -->
