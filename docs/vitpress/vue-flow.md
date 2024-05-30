@@ -19,9 +19,9 @@ npm add @vue-flow/core
   import "@vue-flow/core/dist/theme-default.css";
 
   const nodes = ref([
-    { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
-    { id: '2', label: 'Node 2', position: { x: 100, y: 100 } },
-    { id: '3', label: 'Node 3', position: { x: 400, y: 100 } }
+    { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 50 } },
+    { id: '2', label: 'Node 2', position: { x: 100, y: 200 } },
+    { id: '3', label: 'Node 3', position: { x: 400, y: 200 } }
   ]);
 
   const edges = ref([
@@ -31,19 +31,9 @@ npm add @vue-flow/core
 
 </script>
 
-<div class="vue-flow-container">
+<div class="w-full h-80 border border-gray-200 rounded-md">
   <VueFlow v-model:nodes="nodes" v-model:edges="edges"></VueFlow>
 </div>
-
-<style>
-  .vue-flow-container {
-    padding-top: 4rem;
-    width: 100%;
-    height: 500px;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-  }
-</style>
 ```
 
 ### Vue Composition API
