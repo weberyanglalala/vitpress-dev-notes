@@ -14,13 +14,21 @@ export default withMermaid({
       {text: '.NET', link: '/dotnet/coravel'},
       {text: 'VitPress', link: '/vitpress/index'},
       {text: 'AI', link: '/ai/openai/assistants-api'},
-      {text: 'Docker', link: '/docker/m1-sql-server-connect-from-vm.md'}
+      {text: 'Docker', link: '/docker/m1-sql-server-connect-from-vm'},
+      {text: 'Python', link: '/python/beautifulsoup'},
     ],
     sidebar: [
       {
         text: '.NET',
         items: [
           {text: 'Coravel 範例', link: '/dotnet/coravel'},
+        ],
+        collapsed: false,
+      },
+      {
+        text: 'Python',
+        items: [
+          {text: 'Beautifulsoup', link: '/python/beautifulsoup'},
         ],
         collapsed: false,
       },
