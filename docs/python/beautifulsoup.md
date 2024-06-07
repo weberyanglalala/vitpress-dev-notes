@@ -128,11 +128,14 @@ def extract_categories(nav_tag, base_url):
     """Extract categories from 'nav' tag and return as a list of dictionaries."""
     categories = []
     a_tags = nav_tag.find_all('a', href=lambda href: href and 'CategoryId' in href)
+    existing_category_ids = set()
     for a in a_tags:
         href = base_url + a['href']
         title = a.get_text(strip=True)
         category_id = href.split('CategoryId=')[-1]
-        categories.append({"category_id": category_id, "href": href, "title": title})
+        if category_id not in existing_category_ids:
+            existing_category_ids.add(category_id)
+            categories.append({"category_id": category_id, "href": href, "title": title})
     return categories
 
 
@@ -157,6 +160,7 @@ def main():
 
 if __name__ == '__main__':
     main()
+
 
 
 ```
@@ -302,6 +306,7 @@ def extract_product_details(category, base_url='https://www.sefunnet.com'):
     product_divs = soup.find_all('div', class_='productBox')
 
     products = []
+    existing_product_ids = set()
     for product_div in product_divs:
         product_name = product_div.find('h5').get_text(strip=True)
         product_price = product_div.find('h4', class_='text-center').get_text(strip=True)
@@ -309,7 +314,8 @@ def extract_product_details(category, base_url='https://www.sefunnet.com'):
         match = re.search(r'"GoodsId":"([^"]+)"', product_a_tag['onclick'])
         product_id = match.group(1) if match else None
 
-        if product_id:
+        if product_id and product_id not in existing_product_ids:
+            existing_product_ids.add(product_id)
             products.append({
                 "category_id": category['category_id'],
                 "category_title": category['title'],
@@ -340,6 +346,7 @@ def main():
 
 if __name__ == '__main__':
     main()
+
 
 ```
 
