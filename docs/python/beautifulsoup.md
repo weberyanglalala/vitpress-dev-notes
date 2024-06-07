@@ -275,11 +275,6 @@ import requests
 import re
 from bs4 import BeautifulSoup
 
-"""
-This script reads the category_list.json file, extracts product details from the category list,
-converts the result to JSON, and writes the JSON result to a file.
-"""
-
 
 def read_json_file(filename):
     """Read JSON data from a file."""
@@ -336,17 +331,20 @@ def save_json(data, filename):
 def main():
     category_list = read_json_file('category_list.json')
     all_products = []
+    all_products_id_set = set()
 
     for category in category_list:
         products = extract_product_details(category)
-        all_products.extend(products)
+        for product in products:
+            if product['id'] not in all_products_id_set:
+                all_products.append(product)
+                all_products_id_set.add(product['id'])
 
     save_json(all_products, 'product_list.json')
 
 
 if __name__ == '__main__':
     main()
-
 
 ```
 
