@@ -7,6 +7,9 @@ export default withMermaid({
   cleanUrls: true,
   base: "/vitpress-dev-notes/",
   lastUpdated: true,
+  markdown: {
+    lineNumbers: true
+  },
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
@@ -35,6 +38,7 @@ export default withMermaid({
       {
         text: 'AI',
         items: [
+          {text: 'Lab: Jina Reader API', link: '/ai/openai/document-outline'},
           {text: 'Open AI Assistant API', link: '/ai/openai/assistants-api'},
           {text: 'Lab: 旅遊推薦達人', link: '/ai/openai/travel-recommendation'},
           {text: 'Lab: Build A Coze Chatbot', link: '/ai/coze/coze-chatbot'},
