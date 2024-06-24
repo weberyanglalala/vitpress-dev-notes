@@ -17,6 +17,124 @@
 2. 根據 Jina Reader API 產出的資料透過 OpenAI ChatCompletion API 以及自定義提示詞翻譯並生成文檔。
 3. 將生成的內容保存 Markdown 文件。
 
+```mermaid
+sequenceDiagram
+    participant ConsoleApp
+    participant JinaReaderAPI
+    participant OpenAIAPI
+    ConsoleApp ->> JinaReaderAPI: JinaReaderAPI 取得特定 URI 資訊
+    Note over ConsoleApp, JinaReaderAPI: GetJinaReaderApiResponse
+    JinaReaderAPI ->> ConsoleApp: 將 URI 內容結構化並回傳 JinaReaderAPI 結果
+    ConsoleApp ->> OpenAIAPI: 整合 System Prompt 以及 JinaReaderApiResponse 並發出請求
+    Note over ConsoleApp, OpenAIAPI: GetChatCompletion
+    OpenAIAPI ->> ConsoleApp: 回傳 Open AI ChatCompletion API 結果
+```
+
+## Http Overview
+
+### HTTP 是什麼？
+
+- [MDN: An overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview)
+
+- HTTP 是用於獲取資源（如 HTML 文件）的通訊協定(Client-Server Protocol)。
+- 它是任何 Web 上數據交換的基礎，並且是一種客戶端-服務器協議，這意味著請求由接收方（通常是 Web 瀏覽器）發起。
+- 從伺服器回應一個完整的文檔通常由多種資源構建，如文本內容、佈局指令、圖像、視頻、腳本等。
+  - html
+  - css
+  - js
+  - image
+  - video
+  - ...
+
+### Client and Server
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Server
+    Client ->> Server: 發送 HTTP 請求
+    Server ->> Client: 返回 HTTP 回應
+```
+
+- 客戶端（Client）：發送 HTTP 請求
+  - 從客戶端發出的請求訊息通常稱為 request
+- 伺服器（Server）：接收 HTTP 請求，並返回 HTTP 回應
+  - 而從伺服器返回的訊息稱為 response
+
+::: info
+
+1. 透過瀏覽器瀏覽一般的網頁，誰是發出請求的客戶端？誰是接收請求的伺服器？
+2. 在 Console Application 想要想要取得外部 API 的資源，誰是客戶端？誰是伺服器？
+
+:::
+
+::: tip
+
+透過 Chrome 瀏覽網頁時，如何查看客戶端和服務器之間的 HTTP 請求和回應？
+
+- 開啟 Chrome 開發者工具（F12 或右鍵選擇「檢查」）
+- 切換到 Network 標籤
+- 刷新網頁，即可看到所有的 HTTP 請求和回應
+
+:::
+
+::: details Chrome Devtool Network
+
+![](/chrome/chrome-devtool-network.png)
+
+:::
+
+### HTTP Flow
+
+1. 建立 TCP 連接
+
+- https://www.cloudflare.com/zh-tw/learning/ddos/glossary/tcp-ip/
+
+2. Client 段發出 HTTP Request Message 包含 Method, URI, Protocol Version, Headers, Body
+
+  ```
+  GET / HTTP/1.1
+  Host: developer.mozilla.org
+  Accept-Language: fr
+  ...
+  ```
+
+3. Server 端回應 HTTP Response Message 包含 Protocol Version, Status Code, Status Text, Headers, Body
+
+  ```
+  HTTP/1.1 200 OK
+  Date: Sat, 09 Oct 2010 14:28:02 GMT
+  Server: Apache
+  Last-Modified: Tue, 01 Dec 2009 20:18:22 GMT
+  ETag: "51142bc1-7449-479b075b2891b"
+  Accept-Ranges: bytes
+  Content-Length: 29769
+  Content-Type: text/html
+  ...
+  ```
+
+## 新增 .NET Console Application 專案
+
+![](/prompt-engineering/dotnet8-console-lab-promptEngineering-document-outliner.png)
+
+- 專案類型：Console Application 主控台應用程式
+- 專案名稱：DocumentOutline
+- 方案名稱：Dotnet8PromptEngineeringSamples
+- 架構：.NET 8 (不要使用最上層陳述式)
+  - https://learn.microsoft.com/zh-tw/dotnet/csharp/tutorials/top-level-statements
+
+## HttpClient in .NET
+
+- [HttpClient 類別](https://learn.microsoft.com/zh-tw/dotnet/api/system.net.http.httpclient?view=net-8.0)
+- [System.Net.Http.HttpClient 類別](https://learn.microsoft.com/zh-tw/dotnet/fundamentals/runtime-libraries/system-net-http-httpclient)
+
+::: info
+
+- HttpClient 類別提供了一個基於 HTTP 的網路服務的客戶端實作。
+- HttpClient 類別是一個簡單的類別，用於發送 HTTP 請求和接收 HTTP 回應。
+
+:::
+
 ## 如何閱讀 API 文檔
 
 ::: details API Consultant Prompt
@@ -271,78 +389,6 @@ namespace JinaReaderExample
 
 :::
 
-## Http Overview
-
-### HTTP 是什麼？
-
-- [MDN: An overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview)
-
-- HTTP 是用於獲取資源（如 HTML 文件）的通訊協定(Client-Server Protocol)。
-- 它是任何 Web 上數據交換的基礎，並且是一種客戶端-服務器協議，這意味著請求由接收方（通常是 Web 瀏覽器）發起。
-- 從伺服器回應一個完整的文檔通常由多種資源構建，如文本內容、佈局指令、圖像、視頻、腳本等。
-  - html
-  - css
-  - js
-  - image
-  - video
-  - ...
-
-### Client and Server
-
-```mermaid
-sequenceDiagram
-    participant Client
-    participant Server
-    Client ->> Server: 發送 HTTP 請求
-    Server ->> Client: 返回 HTTP 回應
-```
-
-- 客戶端（Client）：發送 HTTP 請求
-  - 從客戶端發出的請求訊息通常稱為 request
-- 服務器（Server）：接收 HTTP 請求，並返回 HTTP 回應
-  - 而從伺服器返回的訊息稱為 response
-
-::: tip
-
-透過 Chrome 瀏覽網頁時，如何查看客戶端和服務器之間的 HTTP 請求和回應？
-
-- 開啟 Chrome 開發者工具（F12 或右鍵選擇「檢查」）
-- 切換到 Network 標籤
-- 刷新網頁，即可看到所有的 HTTP 請求和回應
-
-:::
-
-
-::: details Chrome Devtool Network
-
-![](/chrome/chrome-devtool-network.png)
-
-:::
-
-### HTTP Flow
-
-1. 建立 TCP 連接
-   - https://www.cloudflare.com/zh-tw/learning/ddos/glossary/tcp-ip/
-2. Client 段發出 HTTP Request Message 包含 Method, URI, Protocol Version, Headers, Body
-  ```
-  GET / HTTP/1.1
-  Host: developer.mozilla.org
-  Accept-Language: fr
-  ...
-  ```
-3. Server 端回應 HTTP Response Message 包含 Protocol Version, Status Code, Status Text, Headers, Body
-  ```
-  HTTP/1.1 200 OK
-  Date: Sat, 09 Oct 2010 14:28:02 GMT
-  Server: Apache
-  Last-Modified: Tue, 01 Dec 2009 20:18:22 GMT
-  ETag: "51142bc1-7449-479b075b2891b"
-  Accept-Ranges: bytes
-  Content-Length: 29769
-  Content-Type: text/html
-  ...
-  ```
-
 ## Jina Reader API 簡介
 
 - [Jina Ai Reader](https://jina.ai/reader/)
@@ -358,19 +404,83 @@ sequenceDiagram
 
 :::
 
-## HttpClient in .NET
-
-- [HttpClient 類別](https://learn.microsoft.com/zh-tw/dotnet/api/system.net.http.httpclient?view=net-8.0)
-- [System.Net.Http.HttpClient 類別](https://learn.microsoft.com/zh-tw/dotnet/fundamentals/runtime-libraries/system-net-http-httpclient)
-
-::: info
-- HttpClient 類別提供了一個基於 HTTP 的網路服務的客戶端實作。
-- HttpClient 類別是一個簡單的類別，用於發送 HTTP 請求和接收 HTTP 回應。
-:::
-
 ## 透過 HttpClient 請求 Jina Reader API
+
+- https://learn.microsoft.com/zh-tw/dotnet/api/system.net.http.httpclient?view=net-8.0
+- https://jina.ai/reader/
+- https://learn.microsoft.com/zh-tw/dotnet/csharp/language-reference/statements/using?redirectedfrom=MSDN
+
+
+::: details Code Sample
+
+```csharp
+private static async Task<string> GetJinaReadApiResponse(string uri)
+{
+    try
+    {
+        using HttpResponseMessage response = await client.GetAsync(uri);
+        response.EnsureSuccessStatusCode();
+        string responseBody = await response.Content.ReadAsStringAsync();
+        //string responseBody = await client.GetStringAsync(uri);
+        return responseBody;
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine("Message :{0} ", e.Message);
+        return null;
+    }
+}
+```
+
+:::
 
 ## API and SDK
 
-## 透過 .NET Open AI SDK 請求 Open AI API
+- API: Application Programming Interface
+  - https://aws.amazon.com/tw/what-is/api/
+- SDK: Software Development Kit
+  - https://aws.amazon.com/tw/what-is/sdk/
+- The difference between API and SDK
+  - https://aws.amazon.com/tw/compare/the-difference-between-sdk-and-api/
+- 開發體驗比較
+  - https://platform.openai.com/docs/api-reference/chat/create
+  - https://www.c-sharpcorner.com/article/integrating-open-ai-chat-completion-in-net-core-8-web-api/
 
+## Install OpenAI .NET SDK (2.0.0-beta.4)
+
+- https://www.nuget.org/packages/OpenAI
+- 專案中安裝 nuget 套件 `OpenAI` (2.0.0-beta.4)
+
+![](/prompt-engineering/dotnet8-console-lab-promptEngineering-add-openai-sdk.png)
+![](/prompt-engineering/dotnet8-console-lab-promptEngineering-install-openai-sdk.png)
+
+## .NET OpenAI SDK ChatCompletion Sample
+
+- [Open AI SDK Code Sample](https://github.com/openai/openai-dotnet/blob/main/examples/Chat/Example01_SimpleChatAsync.cs)
+
+```csharp
+ChatClient client = new(model: "gpt-4o", Environment.GetEnvironmentVariable("OPENAI_API_KEY"));
+ChatCompletion completion = await client.CompleteChatAsync("Say 'this is a test.'");
+Console.WriteLine($"{completion}");
+```
+
+::: details Code Sample
+
+```csharp
+private static async Task<string> GetChatCompletionAsync(string prompt)
+{
+    try
+    {
+        ChatClient openClient = new(model: "gpt-4o", "sk-??");
+        ChatCompletion completion = await openClient.CompleteChatAsync(prompt);
+        return $"{completion}";
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"open ai chat completion api exception: {ex.Message}");
+        return null;
+    }
+}
+```
+
+::: 
