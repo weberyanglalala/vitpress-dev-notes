@@ -1,5 +1,13 @@
 # Lab: Document Outline Console Application
 
+## Keynote
+
+- https://docs.google.com/presentation/d/1u_w4AjaF4zRiTVMka_XfOlbIm7YJb-o9HO7AHgpwGY4/edit?usp=sharing
+
+<div class="w-full">
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vS5SCSK7sRXs4rWO0RxHQtqWOVW5mRiLERaO5weEr3eJrs_jpdUIjEhcqa9RO8aWYWPGXOMjZ4lU-35/embed?start=false&loop=false&delayms=3000" frameborder="0" width="480" height="299" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+</div>
+
 ## 參考資訊
 
 - [MDN: An overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview)
@@ -90,7 +98,7 @@ sequenceDiagram
 
 - https://www.cloudflare.com/zh-tw/learning/ddos/glossary/tcp-ip/
 
-2. Client 段發出 HTTP Request Message 包含 Method, URI, Protocol Version, Headers, Body
+2. Client 端發出 HTTP Request Message 包含 Method, URI, Protocol Version, Headers, Body
 
   ```
   GET / HTTP/1.1
@@ -126,7 +134,6 @@ sequenceDiagram
 ## HttpClient in .NET
 
 - [HttpClient 類別](https://learn.microsoft.com/zh-tw/dotnet/api/system.net.http.httpclient?view=net-8.0)
-- [System.Net.Http.HttpClient 類別](https://learn.microsoft.com/zh-tw/dotnet/fundamentals/runtime-libraries/system-net-http-httpclient)
 
 ::: info
 
