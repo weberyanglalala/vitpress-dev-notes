@@ -3,6 +3,7 @@
 ## Keynote
 
 - https://docs.google.com/presentation/d/1u_w4AjaF4zRiTVMka_XfOlbIm7YJb-o9HO7AHgpwGY4/edit?usp=sharing
+- https://github.com/weberyanglalala/Dotnet8PromptEngineeringSamples/blob/main/PE02.DocumentOutliner/Program.cs
 
 <div class="w-full">
 <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vS5SCSK7sRXs4rWO0RxHQtqWOVW5mRiLERaO5weEr3eJrs_jpdUIjEhcqa9RO8aWYWPGXOMjZ4lU-35/embed?start=false&loop=false&delayms=3000" frameborder="0" width="480" height="299" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
