@@ -67,6 +67,16 @@ export default withMermaid({
         ],
         collapsed: false,
       },
+      {
+        text: 'Line',
+        items: [
+          {text: 'Line Developers Create Provider', link: '/line/line-developers-create-provider.md'},
+          {text: 'Webhooks', link: '/line/webhooks.md'},
+          {text: 'Messaging API Overview', link: '/line/messaging-api-overview.md'},
+          {text: 'Line Liff init', link: '/line/line-liff-init.md'},
+        ],
+        collapsed: false,
+      },
 
     ],
     socialLinks: [
@@ -96,7 +106,7 @@ export default withMermaid({
             a.appendChild(r);
         })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');`
     ],
-    ['link', { rel: 'stylesheet', href: 'https://unpkg.com/tailwindcss@2.0.4/dist/tailwind.min.css' }]
+    ['link', {rel: 'stylesheet', href: 'https://unpkg.com/tailwindcss@2.0.4/dist/tailwind.min.css'}]
   ],
   transformHtml: (code, id, {siteConfig}) => {
     const gtmScript = `<!-- Google Tag Manager -->
