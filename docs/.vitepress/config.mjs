@@ -38,6 +38,7 @@ export default withMermaid({
       {
         text: 'AI',
         items: [
+          {text: 'Lab: Dify Workflow API', link: '/ai/dify/dify-workflow'},
           {text: 'Lab: Jina Reader API', link: '/ai/openai/document-outline'},
           {text: 'Open AI Assistant API', link: '/ai/openai/assistants-api'},
           {text: 'Lab: 旅遊推薦達人', link: '/ai/openai/travel-recommendation'},
@@ -75,7 +76,7 @@ export default withMermaid({
           {text: 'Messaging API Overview', link: '/line/messaging-api-overview.md'},
           {text: 'Line Liff init', link: '/line/line-liff-init.md'},
         ],
-        collapsed: false,
+        collapsed: true,
       },
 
     ],
