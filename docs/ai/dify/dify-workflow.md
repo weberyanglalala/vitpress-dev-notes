@@ -334,3 +334,103 @@ public class DifyController : ControllerBase
     }
 }
 ```
+
+## FrontEnd UI
+
+```html
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div id="app">
+    <div class="pt-5">
+        <div class="flex flex-col w-full md:w-1/2 xl:w-2/5 2xl:w-2/5 3xl:w-1/3 mx-auto p-8 md:p-10 2xl:p-12 3xl:p-14 bg-[#ffffff] rounded-2xl shadow-xl">
+            <div class="flex flex-row gap-3 pb-4">
+                <h1 class="text-3xl font-bold text-[#4B5563] text-[#4B5563] my-auto">新增一個產品</h1>
+            </div>
+            <div class="flex flex-col">
+                <div class="pb-2">
+                    <label for="product-title" class="block mb-2 text-sm font-medium text-[#111827]">產品標題</label>
+                    <input v-model="productTitle" type="text" name="product-title" id="product-title" class="mb-2 bg-gray-50 text-gray-600 border focus:border-transparent border-gray-300 sm:text-sm rounded-lg ring ring-transparent focus:ring-1 focus:outline-none focus:ring-gray-400 block w-full p-2.5 py-3 px-4" placeholder="Enter product title" autocomplete="off">
+                </div>
+                <div class="pb-2">
+                    <label for="product-description" class="block mb-2 text-sm font-medium text-[#111827]">產品敘述</label>
+                    <textarea v-model="productDescription" name="product-description" id="product-description" rows="4" class="mb-2 bg-gray-50 text-gray-600 border focus:border-transparent border-gray-300 sm:text-sm rounded-lg ring ring-transparent focus:ring-1 focus:outline-none focus:ring-gray-400 block w-full p-2.5 py-3 px-4" placeholder="Enter product description"></textarea>
+                </div>
+                <div class="pb-2">
+                    <label for="product-image" class="block mb-2 text-sm font-medium text-[#111827]">產品圖</label>
+                    <input v-model="productImageId" type="text" name="product-image-id" class="mb-2 bg-gray-50 text-gray-600 border focus:border-transparent border-gray-300 sm:text-sm rounded-lg ring ring-transparent focus:ring-1 focus:outline-none focus:ring-gray-400 block w-full p-2.5 py-3 px-4" placeholder="Enter product image Id" autocomplete="off">
+                    <div id="image-preview" class="mt-2" v-show="imagePreviewStatus">
+                        <img :src="imagePreview" alt="Preview" class="max-w-full h-auto rounded-lg">
+                    </div>
+                </div>
+                <button class="w-full text-[#FFFFFF] bg-[#4F46E5] focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-6"
+                        >dify 自動生成產品資訊</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/home/index.js" asp-append-version="true"></script>
+}
+```
+
+```js
+const app = Vue.createApp({
+        data() {
+            return {
+                productTitle: '',
+                productDescription: '',
+                productImageId: '',
+                imagePreview: null,
+                imagePreviewStatus: false,
+                productImagesUrl: '',
+                difyCreateButtonStatus: false,
+                isLoading: false
+            };
+        },
+        methods: {
+            generateProductDetailsByDify() {
+                this.showLoading();
+                fetch("api/Dify/CreateProductDetail", {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        "product_name": this.productTitle
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.isSuccess) {
+                            this.productDescription = data.body.description;
+                            this.productImageId = data.body.prompt_id;
+                            this.imagePreviewStatus = true
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    })
+                    .finally(() => {
+                        this.hideLoading();
+                    });
+            },
+            showLoading() {
+                this.isLoading = true;
+            },
+            hideLoading() {
+                this.isLoading = false;
+            },
+        },
+        watch: {
+            productTitle: function (val) {
+                this.difyCreateButtonStatus = val.length >= 5 && val.length <= 30;
+            }
+        }
+    })
+;
+
+app.mount('#app');
+```
