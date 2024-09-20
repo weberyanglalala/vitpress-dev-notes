@@ -92,6 +92,8 @@ curl -X POST 'http://dify.local/v1/workflows/run' \
 ```
 
 ## Postman
+- Collection
+- Environment Variables
 - get api key from backend
 
 ![](/dify/postman-dify-sample.png)
