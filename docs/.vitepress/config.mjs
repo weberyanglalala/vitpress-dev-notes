@@ -57,7 +57,7 @@ export default withMermaid({
       {
         text: 'Semantic Kernel',
         items: [
-          {text: 'Lab: First Agent', link: '/semantic-kernel/first-agent'},
+          {text: 'Semantic Kernel Note', link: '/semantic-kernel/semantic-kernel-note'},
         ],
         collapsed: false,
       },
