@@ -494,7 +494,7 @@ namespace ConsoleApp4
 }
 ```
 
-## Lab: Product Detail Create
+## Lab05: Product Detail Create
 
 ### System Prompt
 
@@ -520,8 +520,6 @@ namespace ConsoleApp4
 ```
 這款吸塵器不僅能吸走地板上的灰塵，還能吸走你心中的煩惱！它的吸力強大到可以讓你懷疑自己是不是在家裡養了一隻小黑洞。無論是貓毛、狗毛還是你不小心掉落的薯片屑，它都能一掃而空，讓你的家瞬間變得像新的一樣！
 ```
-
-## Create A Kernel
 
 ### Create a new plugin with folder structure
 
@@ -625,7 +623,7 @@ public class ProductCreateClient
 }
 ```
 
-## Lab02: Product CRUD Plugin
+## Lab06: Product CRUD With EF Core Plugin
 
 ### Install the required packages
 
@@ -870,3 +868,125 @@ INSERT INTO Products (Name, Description, SalePrice) VALUES
 ```
 
 :::
+
+
+## Lab07: Product Semantic Search By MongoDB
+
+> https://github.com/weberyanglalala/Mvc8MongoNote/tree/main/Mvc8.Mongo#project-setup
+
+### Create a class options binding MongoDbVectorSettings
+
+```csharp
+builder.Services
+      .Configure<MongoDbVectorSettings>(builder.Configuration.GetSection(nameof(MongoDbVectorSettings)))
+      .AddSingleton(settings => settings.GetRequiredService<IOptions<MongoDbVectorSettings>>().Value);
+builder.Services.AddSingleton<IMongoClient>(sp =>
+{
+    var settings = sp.GetRequiredService<MongoDbVectorSettings>();
+    return new MongoClient(settings.ConnectionString);
+});
+
+builder.Services.AddScoped<SemanticProductSearchService>();
+```
+
+### Create A SemanticProductSearchService
+
+```csharp
+using System.Diagnostics.CodeAnalysis;
+using Dotnet8DifyAgentSample.Models;
+using Dotnet8DifyAgentSample.Services.ProductService;
+using Dotnet8DifyAgentSample.Services.SemanticProductSearch.Dtos;
+using Dotnet8DifyAgentSample.Settings;
+using Microsoft.SemanticKernel.Connectors.MongoDB;
+using Microsoft.SemanticKernel.Connectors.OpenAI;
+using Microsoft.SemanticKernel.Memory;
+using MongoDB.Driver;
+
+namespace Dotnet8DifyAgentSample.Services.SemanticProductSearch;
+
+[Experimental("SKEXP0020")]
+public class SemanticProductSearchService
+{
+    private readonly ProductServiceByEFCore _productServiceByEFCore;
+    private readonly MemoryBuilder _memoryBuilder;
+    private readonly ISemanticTextMemory _semanticTextMemory;
+    private readonly MongoDbVectorSettings _mongoDbVectorSettings;
+    private readonly MongoDBMemoryStore _mongoDBMemoryStore;
+    private readonly string _openAiApiKey;
+    private readonly string _connectionString;
+    private readonly string _searchIndexName;
+    private readonly string _databaseName;
+    private readonly string _collectionName;
+    private readonly IMongoClient _mongoClient;
+    private readonly ILogger<SemanticProductSearchService> _logger;
+
+    public SemanticProductSearchService(MongoDbVectorSettings mongoDbVectorSettings, IMongoClient mongoClient,
+        IConfiguration configuration, ILogger<SemanticProductSearchService> logger, ProductServiceByEFCore productServiceByEfCore)
+    {
+        _mongoDbVectorSettings = mongoDbVectorSettings;
+        _connectionString = _mongoDbVectorSettings.ConnectionString;
+        _searchIndexName = _mongoDbVectorSettings.SearchIndexName;
+        _databaseName = _mongoDbVectorSettings.DatabaseName;
+        _collectionName = _mongoDbVectorSettings.CollectionName;
+        _openAiApiKey = configuration["OpenAIApiKey"];
+        _mongoDBMemoryStore = new MongoDBMemoryStore(_connectionString, _databaseName, _searchIndexName);
+        _memoryBuilder = new MemoryBuilder();
+        _memoryBuilder.WithOpenAITextEmbeddingGeneration("text-embedding-ada-002", _openAiApiKey);
+        _memoryBuilder.WithMemoryStore(_mongoDBMemoryStore);
+        _semanticTextMemory = _memoryBuilder.Build();
+        _mongoClient = mongoClient;
+        _logger = logger;
+        _productServiceByEFCore = productServiceByEfCore;
+    }
+
+    public async Task<List<ProductSearchResult>> GetRecommendationsAsync(string userInput)
+    {
+        var memories = _semanticTextMemory.SearchAsync(_collectionName, userInput, limit: 10, minRelevanceScore: 0.6);
+
+        var result = new List<ProductSearchResult>();
+        await foreach (var memory in memories)
+        {
+            var productSearchResult = new ProductSearchResult
+            {
+                Id = memory.Metadata.Id,
+                Description = memory.Metadata.Description,
+                Name = memory.Metadata.AdditionalMetadata,
+                Relevance = memory.Relevance.ToString("0.00")
+            };
+            result.Add(productSearchResult);
+        }
+
+        return result;
+    }
+
+    public async Task FetchAndSaveProductDocumentsAsync(int startIndex, int limitSize)
+    {
+        await FetchAndSaveProductDocuments(_semanticTextMemory, startIndex, limitSize);
+    }
+
+    private async Task FetchAndSaveProductDocuments(ISemanticTextMemory memory, int startIndex, int limitSize)
+    {
+        
+        List<Product> products = _productServiceByEFCore.GetProductsByPageAsQueryable(startIndex, limitSize).ToList();
+        foreach (var product in products)
+        {
+            try
+            {
+                _logger.LogInformation($"Processing {product.Id}...");
+                await memory.SaveInformationAsync(
+                    collection: _collectionName,
+                    text: product.Description,
+                    id: product.Id.ToString(),
+                    description: product.Description,
+                    additionalMetadata: product.Name
+                );
+                _logger.LogInformation($"Done {product.Id}...");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
+        }
+    }
+}
+```
