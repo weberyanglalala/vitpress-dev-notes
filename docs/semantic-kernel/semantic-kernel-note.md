@@ -352,7 +352,34 @@ public static class EnumExtensions
 ```
 
 ## Lab04: Semantic Kernel With Chat History
-  
+
+### IChatCompletionService
+
+> Abstraction for ai model as provider
+> Microsoft Semantic Kernel ChatCompletion
+> Microsoft.SemanticKernel.Connectors.OpenAI
+> Microsoft.SemanticKernel.Connectors.Google
+> Microsoft.SemanticKernel.Connectors.MistralAI
+
+- `await chatService.GetChatMessageContentAsync`
+
+- OpenAI
+  - `OpenAIChatCompletionService`
+- Google Gemini
+  - `GoogleGeminiChatCompletionService`
+- Mistral
+  - `MistralAIChatCompletionService`
+
+### Remember ChatHistory in Conversation
+
+- `ChatHistory`
+- `history.AddUserMessage()`
+- `history.AddAssistantMessage()`
+- `history.AddSystemMessage()`
+
+
+### Add Logging
+
 ```
 <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
@@ -411,7 +438,8 @@ namespace ConsoleApp4
                                clear headings and bullet points and ask for end conversation.
                                if user intend to end the conversation, reply with {{choices.[1]}}.
                                If you are unsure, reply with {{choices.[0]}}.
-                               Choices: {{choices}}.</message>
+                               Choices: {{choices}}.
+                               </message>
                                {{#each chatHistory}}
                                    <message role="{{role}}">{{content}}</message>
                                {{/each}}
