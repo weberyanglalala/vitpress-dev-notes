@@ -46,51 +46,57 @@
 > https://github.com/microsoft/semantic-kernel/blob/main/dotnet/samples/GettingStarted/Step1_Create_Kernel.cs
 
 ```csharp
+namespace Lab01_Semantic_Kernel_Intro;
+
 // Import packages
 // 安裝套件
-
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 
-// Create a kernel with OpenAI chat completion
-// 建立一個 Kernel
-
-// Create a kernel with OpenAI chat completion
-#pragma warning disable SKEXP0070
-var kernel = Kernel.CreateBuilder()
-    .AddGoogleAIGeminiChatCompletion("gemini-1.5-flash", "").Build();
-//.AddOpenAIChatCompletion("gpt-4o-mini-2024-07-18", "").Build();
-
-// Example 1. Invoke the kernel with a prompt and display the result
-// 呼叫 Kernel 進行對話
-Console.WriteLine(await kernel.InvokePromptAsync("天空是什麼顏色？"));
-Console.WriteLine();
-
-// Example 2. Invoke the kernel with a templated prompt and display the result
-// 透過 Prompt Template 進行對話
-KernelArguments arguments = new() { { "topic", "海洋" } };
-Console.WriteLine(await kernel.InvokePromptAsync("{{$topic}} 是什麼顏色？", arguments));
-Console.WriteLine();
-
-// Example 3. Invoke the kernel with a templated prompt and stream the results to the display
-// 使用模板提示並將結果以串流方式顯示
-await foreach (var update in kernel.InvokePromptStreamingAsync("{{$topic}} 是什麼顏色? 提供詳細的解釋。", arguments))
+class Program
 {
-    Console.Write(update);
-}
+    async static Task Main(string[] args)
+    {
+        // Create a kernel with OpenAI chat completion
+        // Create a kernel with OpenAI chat completion
+        #pragma warning disable SKEXP0070
+        var kernel = Kernel.CreateBuilder()
+            .AddOpenAIChatCompletion("gpt-4o-mini-2024-07-18", "").Build();
 
-Console.WriteLine(string.Empty);
+        // Example 1. Invoke the kernel with a prompt and display the result
+        // 呼叫 Kernel 進行對話
+        Console.WriteLine(await kernel.InvokePromptAsync("天空是什麼顏色？"));
+        Console.WriteLine();
 
-// Example 4. Invoke the kernel with a templated prompt and execution settings
-// 模板提示和執行設定來呼叫 Kernel
-arguments = new(new OpenAIPromptExecutionSettings { MaxTokens = 500, Temperature = 0.5 }) { { "topic", "dogs" } };
-Console.WriteLine(await kernel.InvokePromptAsync("請告訴我一個關於 {{$topic}} 的故事。 ", arguments));
+        // Example 2. Invoke the kernel with a templated prompt and display the result
+        // 透過 Prompt Template 進行對話
+        KernelArguments arguments = new() { { "topic", "海洋" } };
+        Console.WriteLine(await kernel.InvokePromptAsync("{{$topic}} 是什麼顏色？", arguments));
+        Console.WriteLine();
 
-// Example 5. Invoke the kernel with a templated prompt and execution settings configured to return JSON
-// 使用模板化提示和設定回覆型別為 JSON
+        // Example 3. Invoke the kernel with a templated prompt and stream the results to the display
+        // 使用模板提示並將結果以串流方式顯示
+        await foreach (var update in kernel.InvokePromptStreamingAsync("{{$topic}} 是什麼顏色? 提供詳細的解釋。", arguments))
+        {
+            Console.Write(update);
+        }
+
+        Console.WriteLine(string.Empty);
+
+        // Example 4. Invoke the kernel with a templated prompt and execution settings
+        // 模板提示和執行設定來呼叫 Kernel
+        arguments = new(new OpenAIPromptExecutionSettings { MaxTokens = 500, Temperature = 0.5 })
+            { { "topic", "dogs" } };
+        Console.WriteLine(await kernel.InvokePromptAsync("請告訴我一個關於 {{$topic}} 的故事。 ", arguments));
+
+        // Example 5. Invoke the kernel with a templated prompt and execution settings configured to return JSON
+        // 使用模板化提示和設定回覆型別為 JSON
 #pragma warning disable SKEXP0010
-arguments = new(new OpenAIPromptExecutionSettings { ResponseFormat = "json_object" }) { { "topic", "chocolate" } };
-Console.WriteLine(await kernel.InvokePromptAsync("創建一個食譜： {{$topic}} cake in JSON format", arguments));
+        arguments = new(new OpenAIPromptExecutionSettings { ResponseFormat = "json_object" })
+            { { "topic", "chocolate" } };
+        Console.WriteLine(await kernel.InvokePromptAsync("創建一個食譜： {{$topic}} cake in JSON format", arguments));
+    }
+}
 
 ```
 
