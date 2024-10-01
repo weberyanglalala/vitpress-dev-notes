@@ -2,6 +2,28 @@
 
 - https://learn.microsoft.com/en-us/semantic-kernel/get-started/quick-start-guide?pivots=programming-language-csharp
 
+## What is Semantic Kernel?
+
+- https://learn.microsoft.com/en-us/semantic-kernel/concepts/kernel?pivots=programming-language-csharp
+
+- Kernel 是 Semantic Kernel 的核心組件。
+- 簡單來說，Kernel 是一個依賴注入容器，負責管理運行您的 AI 應用所需的所有 Service 和 Plugin。
+
+## What does Semantic Kernel do?
+
+- 選擇最佳的 AI 服務來運行 prompt。
+- 使用提供的 prompt template 構建 prompt。 
+- 將 prompt 發送到 AI 服務，接收並解析響應。
+- 最後將來自 LLM 的 response 返回給您的應用程序
+
+::: info
+
+- Kernel 是一個依賴注入容器，負責管理運行您的 AI 應用所需的所有 Service 和 Plugin。
+- Service 包括 AI 服務（例如，Chat Completion, text ）和運行應用程序所需的其他服務（例如，Logging 和 HTTP Client）。
+- Plugin 是一個包含一個或多個 Kernel Function 的 Component，例如，Kernel 可以透過 Plugin 呼叫其中的 function 從數據庫檢索數據或調用外部API以執行操作。
+
+:::
+
 ## Quick Start Guide
 
 - 安裝必要的套件
@@ -205,6 +227,9 @@ public static class EnumExtensions
 
 ## Lab03: Generate Product Detail and Category By Plugin
 
+> WF02: Demo: Create Product Detail Workflow
+> https://agent.build-school.com/app/7145f604-d7e8-4722-9d48-ecbca9b90467/workflow
+
 ### Kernel Function: Generate Travel Category, Description By Category Name
 
 ```
@@ -225,9 +250,22 @@ public static class EnumExtensions
         5. 在進行分類時，考慮行程名稱中的關鍵詞和語境，以確保準確性。
 ```
 
+::: details add logging
+
+```
+<ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
+    <PackageReference Include="Microsoft.SemanticKernel" Version="1.21.1" />
+</ItemGroup>
+```
+
+::: 
+
 
 
 ```csharp
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ConsoleApp3;
 
@@ -237,6 +275,7 @@ using System.Text.Json.Serialization;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 
 class Program
 {
@@ -248,9 +287,10 @@ class Program
         kernelBuilder.AddOpenAIChatCompletion("gpt-4o-mini-2024-07-18",
             "");
         kernelBuilder.Plugins.AddFromType<TravelFactory>();
+        kernelBuilder.Services.AddLogging(c => c.AddConsole().SetMinimumLevel(LogLevel.Trace));
         Kernel kernel = kernelBuilder.Build();
-        OpenAIPromptExecutionSettings settings = new() { FunctionChoiceBehavior = FunctionChoiceBehavior.Auto() };
-        Console.WriteLine(await kernel.InvokePromptAsync("請幫我創建一個關於台灣歷史博物館的旅行體驗。", new(settings)));
+        OpenAIPromptExecutionSettings settings = new() { FunctionChoiceBehavior = FunctionChoiceBehavior.Auto(), ResponseFormat = "json_object" };
+        Console.WriteLine(await kernel.InvokePromptAsync("請幫我創建一個關於台灣歷史博物館的旅行體驗 in json。", new KernelArguments(settings)));
     }
     
 
@@ -309,7 +349,149 @@ public static class EnumExtensions
         return attribute == null ? enumValue.ToString() : attribute.Description;
     }
 }
+```
 
+## Lab04: Semantic Kernel With Chat History
+  
+```
+<ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
+    <PackageReference Include="Microsoft.SemanticKernel" Version="1.21.1" />
+    <PackageReference Include="Microsoft.SemanticKernel.Core" Version="1.21.1-alpha" />
+    <PackageReference Include="Microsoft.SemanticKernel.Plugins.Core" Version="1.21.1-alpha" />
+    <PackageReference Include="Microsoft.SemanticKernel.PromptTemplates.Handlebars" Version="1.21.1" />
+</ItemGroup>
+```
+
+
+```csharp 
+using System.Diagnostics.CodeAnalysis;
+using System.Text;
+using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel.ChatCompletion;
+using Microsoft.SemanticKernel.Plugins.Core;
+using Microsoft.SemanticKernel.PromptTemplates.Handlebars;
+
+namespace ConsoleApp4
+{
+    class Program
+    {
+        private static readonly string OpenApiKey = ""
+        private static readonly string DefaultModel = "gpt-4o-mini-2024-07-18";
+
+        [Experimental("SKEXP0050")]
+        static async Task Main(string[] args)
+        {
+            var builder = Kernel.CreateBuilder();
+            builder.AddOpenAIChatCompletion(DefaultModel, OpenApiKey);
+            builder.Plugins.AddFromType<ConversationSummaryPlugin>();
+            var kernel = builder.Build();
+
+            // Create a Semantic Kernel template for chat
+            var chat = kernel.CreateFunctionFromPrompt(
+                @"{{$history}}
+                            User: {{$request}}
+                            Assistant: ");
+            // Create choices
+            List<string> choices = ["Continue", "End", "Summarize"];
+
+            // Create a chat history
+            ChatHistory history = [];
+
+            // Create handlebars template for intent
+            var functionFromPrompt = kernel.CreateFunctionFromPrompt(
+                new()
+                {
+                    Template = """
+                               <message role="system">
+                               You are a experienced web developer.
+                               You are willing to answer questions about web development.
+                               if user intend to summarize the conversation, please summarize the all the chat histories in markdown with
+                               clear headings and bullet points and ask for end conversation.
+                               if user intend to end the conversation, reply with {{choices.[1]}}.
+                               If you are unsure, reply with {{choices.[0]}}.
+                               Choices: {{choices}}.</message>
+                               {{#each chatHistory}}
+                                   <message role="{{role}}">{{content}}</message>
+                               {{/each}}
+
+                               <message role="user">{{request}}</message>
+                               <message role="system">Intent:</message>
+                               """,
+                    TemplateFormat = "handlebars"
+                },
+                new HandlebarsPromptTemplateFactory()
+            );
+
+            // Start the chat loop
+            while (true)
+            {
+                // Get user input
+                Console.Write("User > ");
+                var request = Console.ReadLine();
+
+                // Invoke prompt
+                var intent = await kernel.InvokeAsync(
+                    functionFromPrompt,
+                    new()
+                    {
+                        { "request", request },
+                        { "choices", choices },
+                        { "history", history }
+                    }
+                );
+
+                // End the chat if the intent is "Stop"
+                if (intent.ToString().ToUpper() == "END")
+                {
+                    WriteHistoryToFile(history);
+                    break;
+                }
+
+                // Get chat response
+                var chatResult = kernel.InvokeStreamingAsync<StreamingChatMessageContent>(
+                    chat,
+                    new()
+                    {
+                        { "request", request },
+                        { "history", string.Join("\n", history.Select(x => x.Role + ": " + x.Content)) }
+                    }
+                );
+
+                // Stream the response
+                var message = new StringBuilder();
+                await foreach (var chunk in chatResult)
+                {
+                    if (chunk.Role.HasValue)
+                    {
+                        Console.Write(chunk.Role + " > ");
+                    }
+
+                    message.Append(chunk.Content);
+                    Console.Write(chunk);
+                }
+                Console.WriteLine();
+
+                // Append to history
+                history.AddUserMessage(request!);
+                history.AddAssistantMessage(message.ToString());
+            }
+        }
+
+        private static void WriteHistoryToFile(ChatHistory history)
+        {
+            string fileName = $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}-result.txt";
+            File.WriteAllText(fileName, string.Join("\n", history.Select(x => x.Role + ": " + x.Content)));
+        }
+
+        private static async Task SaveResponseToFileAsync(string response)
+        {
+            string fileName = $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}-result.txt";
+            await File.WriteAllTextAsync(fileName, response);
+        }
+    }
+}
 ```
 
 ## Lab: Product Detail Create
