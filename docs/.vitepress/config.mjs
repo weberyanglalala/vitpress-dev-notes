@@ -36,6 +36,24 @@ export default withMermaid({
         collapsed: false,
       },
       {
+        text: 'MongoDB',
+        items: [
+          {text: 'Get Started', link: '/mongodb/Unit 01 Getting Started with MongoDB Atlas, the Developer Data Platform'},
+          {text: 'Overview', link: '/mongodb/Unit 02 - Overview of MongoDB and the Document Model'},
+          {text: 'Data Modeling', link: '/mongodb/Unit 03 - MongoDB Data Modeling'},
+          {text: 'Data Relations', link: '/mongodb/Unit 04 - Deal with Data Relationships in MongoDB'},
+          {text: 'Embeddings and References', link: '/mongodb/Unit 07 - Embedding and References'},
+          {text: 'Scale Data Models', link: '/mongodb/Unit 08 - Scaling Data Model in MongoDB'},
+          {text: 'Connection Strings', link: '/mongodb/Unit 09 - Connection Strings in MongoDB'},
+          {text: 'Seed Sample Database', link: '/mongodb/Seed Sample Database'},
+          {text: 'Create Document', link: '/mongodb/Unit 10 - Create Data in Mongo DB'},
+          {text: 'Find Documents', link: '/mongodb/Unit 11 - Find Documents in MongoDB Collection'},
+          {text: 'Replace Documents', link: '/mongodb/Unit 12 - Replacing Document in Mongo DB'},
+          {text: 'Query Documents', link: '/mongodb/Unit 13 - Modifying Query Results'},
+        ],
+        collapsed: false,
+      },
+      {
         text: 'AI',
         items: [
           {text: 'Lab: Dify Workflow API', link: '/ai/dify/dify-workflow'},
