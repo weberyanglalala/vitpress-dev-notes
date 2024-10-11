@@ -649,6 +649,26 @@ public class LineMessageService
 
 ## ChatController.cs
 
+```mermaid
+sequenceDiagram
+    participant WebApp
+    participant LINE as LINE Messaging
+    
+    WebApp->>LINE: Register webhook URL
+    Note over LINE: Store webhook URL
+    
+    loop Message Event Occurs
+        Note over LINE: User sends message
+        LINE->>WebApp: Send HTTP POST to webhook URL
+        Note over WebApp: Process message data
+        WebApp-->>LINE: Send 200 OK response
+        opt Reply to message
+            WebApp->>LINE: Send reply message (API call)
+            LINE-->>WebApp: Confirm message sent
+        end
+    end
+```
+
 ![](https://res.cloudinary.com/dxz5marhj/image/upload/v1728606509/drsgzuao/zgugnsp8a6argjrjnb7v.png)
 
 ::: details Code
