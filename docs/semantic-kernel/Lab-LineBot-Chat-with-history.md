@@ -102,8 +102,8 @@ public class LineMessagingApiSettings
 {
   // ...
   "LineMessagingApiSettings": {
-      "UserId": "Ue712a450bb568450ab81346893eacc12",
-      "ChannelAccessToken": "nro54GxjIaFvkBPeF17eAZvsVc/0orIP2ZEhrSyPcsfeSL7AOS2xJnEWoVW9l3Z4XuJnT8z8blAIhGEGToxObAL1aIr6pOyd4kNR3C25cftDp2Cwg3eBZe46fl7vpXXPkadVg8dDSzNUZW97PEUWLwdB04t89/1O/w1cDnyilFU="
+      "UserId": "",
+      "ChannelAccessToken": ""
     }
 }
 ```
