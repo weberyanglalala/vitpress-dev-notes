@@ -76,6 +76,7 @@ export default withMermaid({
         text: 'Semantic Kernel',
         items: [
           {text: 'Semantic Kernel Note', link: '/semantic-kernel/semantic-kernel-note'},
+          {text: 'Lab: Line Bot Chat with history', link: '/semantic-kernel/Lab-LineBot-Chat-with-history'},
         ],
         collapsed: false,
       },
