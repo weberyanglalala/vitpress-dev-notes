@@ -55,13 +55,13 @@
 }
 ```
 
-### Set up Line Official Account and ngrok or dev tunnel for webhook
+## Set up Line Official Account and ngrok or dev tunnel for webhook
 
 > https://hackmd.io/@weberyang0623/Bk24FjQJyl
 
 > https://weberyanglalala.github.io/vitpress-dev-notes/ai/openai/travel-recommendation#setup-line-messaging-api-app
 
-### Register Services in Program.cs
+## Register Services in Program.cs
 
 ```csharp
 
@@ -84,9 +84,9 @@ builder.Services.AddScoped<LineMessageService>();
 
 ```
 
-### LineMessagingApiSettings
+## LineMessagingApiSettings
 
-#### LineMessagingApiSettings.cs
+####LineMessagingApiSettings.cs
 
 ```cs
 public class LineMessagingApiSettings
@@ -96,19 +96,19 @@ public class LineMessagingApiSettings
 }
 ```
 
-#### appsettings.json
+### appsettings.json
 
 ```json
 {
   // ...
   "LineMessagingApiSettings": {
-      "UserId": "Ue712a450bb568450ab81346893eacc12",
-      "ChannelAccessToken": "nro54GxjIaFvkBPeF17eAZvsVc/0orIP2ZEhrSyPcsfeSL7AOS2xJnEWoVW9l3Z4XuJnT8z8blAIhGEGToxObAL1aIr6pOyd4kNR3C25cftDp2Cwg3eBZe46fl7vpXXPkadVg8dDSzNUZW97PEUWLwdB04t89/1O/w1cDnyilFU="
+      "UserId": "",
+      "ChannelAccessToken": ""
     }
 }
 ```
 
-### MongoRepository.cs
+## MongoRepository.cs
 
 ![](https://res.cloudinary.com/dxz5marhj/image/upload/v1728604832/drsgzuao/nc3p5ki1wdbbslyn5cud.png)
 
@@ -236,7 +236,7 @@ public class MongoRepository
 
 ::: 
 
-### SemanticProductSearchService
+## SemanticProductSearchService
 
 ![](https://res.cloudinary.com/dxz5marhj/image/upload/v1728605243/drsgzuao/kwpzyehsgagq8t6gyvpx.png)
 
@@ -352,7 +352,7 @@ public class SemanticProductSearchService
 
 :::
 
-### TravelChatServicePlugin.cs
+## TravelChatServicePlugin.cs
 
 ![](https://res.cloudinary.com/dxz5marhj/image/upload/v1728605000/drsgzuao/doxozlbtvgutawdthuqx.png)
 
@@ -389,7 +389,7 @@ public class TravelChatServicePlugin
 
 :::
 
-### TravelChatService.cs
+## TravelChatService.cs
 
 ![](https://res.cloudinary.com/dxz5marhj/image/upload/v1728605886/drsgzuao/ioqyjqanvnwqqhfb5syf.png)
 
@@ -466,7 +466,7 @@ public class TravelChatService
 
 :::
 
-### LineMessageService.cs
+## LineMessageService.cs
 
 ![](https://res.cloudinary.com/dxz5marhj/image/upload/v1728606050/drsgzuao/zfco1kduiyatzf7e8g40.png)
 
@@ -647,7 +647,7 @@ public class LineMessageService
 
 :::
 
-### ChatController.cs
+## ChatController.cs
 
 ![](https://res.cloudinary.com/dxz5marhj/image/upload/v1728606509/drsgzuao/zgugnsp8a6argjrjnb7v.png)
 
